@@ -1,37 +1,37 @@
-## Welcome to GitHub Pages
+# Confounding_EffectModification: Beginner Level
+ 
+## Stratified analysis to study association between stroke and angina with BMI as a 3rd variable
+framdata<-read.csv(file.choose(),header = T)
+names(framdata)
+attach(framdata)
 
-You can use the [editor on GitHub](https://github.com/SyombuaN/Confounding_EffectModification-using-R-Beginner-Level/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Categorize individuals into 2 groups of BMI : normal or over weight 
+BMI_category<-ifelse(BMI >25,"Overweight","Normal Weight")
+table(BMI_category)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## *Install and load epiR Package*
+library(epiR)
+epitables<-table(framdata$STROKE,framdata$ANGINA,BMI_category)
+rownames(epitables)<-c("ANGINA","NO ANGINA") #EXPOSURE
+colnames(epitables)<-c("STROKE","NO STROKE")   # OUTCOME 
+epitables 
 
-### Markdown
+## Prepare the matrix table using the information and find the RRs and ORs
+## for normal weight people (BMI<25)
+normal_wt<-matrix(c(1166,167,91,25),nrow = 2,byrow = T)
+rownames(normal_wt)<-c("ANGINA","NO ANGINA") #EXPOSURE
+colnames(normal_wt)<-c("STROKE","NO STROKE")  # OUTCOME 
+normal_wt
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## for overweight individuals (BMI >25)
+over_wt<-matrix(c(1341,280,126,36),nrow = 2,byrow = T)
+rownames(over_wt)<-c("ANGINA","NO ANGINA") #EXPOSURE
+colnames(over_wt)<-c("STROKE","NO STROKE")   # OUTCOME 
+over_wt
 
-```markdown
-Syntax highlighted code block
+## Stratified Odds Ratios and Risk Ratios
+epi.2by2(epitables,method = "cohort.count") #crude/unadjusted
+epi.2by2(normal_wt,method = "cohort.count") #adjusted for normal weight individuals
+epi.2by2(over_wt,method = "cohort.count") #adjusted for overweight individuals
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/SyombuaN/Confounding_EffectModification-using-R-Beginner-Level/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+detach(framdata)
