@@ -9,6 +9,7 @@ attach(framdata)
 BMI_category<-ifelse(BMI >25,"Overweight","Normal Weight")
 table(BMI_category)
 
+## *Install and load epiR Package*
 library(epiR)
 epitables<-table(framdata$STROKE,framdata$ANGINA,BMI_category)
 rownames(epitables)<-c("ANGINA","NO ANGINA") #EXPOSURE
