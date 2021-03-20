@@ -1,5 +1,5 @@
 # Stratified Analysis: Beginner Level 
-## *Confounding Effect Modification*
+## *Confounding vs Effect Modification*
  
 ## Stratified Analysis to study association between stroke and angina with BMI as a 3rd variable
    *Exposure=Angina, Outcome= Stroke*
